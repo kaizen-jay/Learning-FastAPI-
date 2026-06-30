@@ -1,2 +1,2 @@
 This is my first time learning git and github...
-This is the feature 1 
+This is the feature
