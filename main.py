@@ -1,4 +1,4 @@
-from fastapi import FastAPI
+from fastapi import FastAPI, Path
 import json
 app = FastAPI() #app naam se hamne ek object banaya hai FastAPI class ka
 
@@ -14,7 +14,6 @@ def aboutt():
 
 #------------------------------------------------------------------------
 
-from fastapi import FastAPI
 
 
 def load_data(): #kyuki ye kaam hame baar baar karna padega that's why we are making this load function
@@ -29,4 +28,14 @@ def load_data(): #kyuki ye kaam hame baar baar karna padega that's why we are ma
 def view():
      data = load_data()
      return data 
+
+@app.get('/patient/{patient_id}')
+def view_patient(patient_id: str):#ye function ban gaya ab hame iska logic likhna hai
+    #load all the patients
+    data = load_data()
+
+    if patient_id in data:
+        return data[patient_id]
+    return {'error', 'patient not found'}
+
 
