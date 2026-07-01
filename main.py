@@ -1,4 +1,4 @@
-from fastapi import FastAPI, Path, HTTPException
+from fastapi import FastAPI, Path, HTTPException, Query
 import json
 app = FastAPI() #app naam se hamne ek object banaya hai FastAPI class ka
 
@@ -38,5 +38,23 @@ def view_patient(patient_id: str):#ye function ban gaya ab hame iska logic likhn
         return data[patient_id]
     raise HTTPException(status_code=404, detail='Patient not found')
  
+ #Now we are creating an endpoint to sort patients based on some keypoints
 
+@app.get('/sort')
+def sort_patients(sort_by:str = Query(..., description= 'Sort on the basis of Height, Weight or BMI'),order:str = Query('asc', description= 'Sort in ascending or descending order'))
+    #Here sort by is the required parameter thats why i put '...' there, and the 'order' is an optional parameter so we've given the value
+    valid_fields = ['height', 'weight', 'bmi']
+    if sort_by not in valid_fields:
+        raise HTTPException(status_code=400, detail= f'Invalid field selected from {valid_fields}' )
+    
+    if order not in ['asc', 'desc']:
+        raise HTTPException(status_code=400, detail= 'Invalid order. Select between asc and desc')
+    
+    #now we will load data again
+    data = load_data()
+    sort_order = True if order=='desc' else False
+    #ab hame data ko iss tareeke se dikhana hai ki vo sort ho jaaye
+    sorted_data = sorted(data.values(), key=lambda x: x.get(sort_by, 0), reverse=sort_order ) #reverse true hoga to descending order me sorting hogi and false hoga to ascending order me sorting hogi
+
+    return sorted_data
 
