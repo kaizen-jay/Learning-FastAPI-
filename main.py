@@ -41,7 +41,7 @@ def view_patient(patient_id: str):#ye function ban gaya ab hame iska logic likhn
  #Now we are creating an endpoint to sort patients based on some keypoints
 
 @app.get('/sort')
-def sort_patients(sort_by:str = Query(..., description= 'Sort on the basis of Height, Weight or BMI'),order:str = Query('asc', description= 'Sort in ascending or descending order'))
+def sort_patients(sort_by:str = Query(..., description= 'Sort on the basis of height, weight or bmi'),order:str = Query('asc', description= 'Sort in ascending or descending order')):
     #Here sort by is the required parameter thats why i put '...' there, and the 'order' is an optional parameter so we've given the value
     valid_fields = ['height', 'weight', 'bmi']
     if sort_by not in valid_fields:
