@@ -58,3 +58,6 @@ def sort_patients(sort_by:str = Query(..., description= 'Sort on the basis of he
 
     return sorted_data
 
+print("I had to make my github green sorry 😭")
+
+
