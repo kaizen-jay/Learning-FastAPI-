@@ -1,0 +1,1 @@
+#Step 1: Ham pehle bhi client se server pe http request bhej rahe the but wo 'get' type me thi matlab ham data retrieve kar rahe the. In this step we will send an HTTP request in the 'post' jisse ki ham data server pe bhejenge.
