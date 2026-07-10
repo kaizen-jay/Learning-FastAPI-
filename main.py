@@ -21,8 +21,11 @@ class Patient(BaseModel): #means hamne ek class banayi jo inherit karegi basemod
     city : Annotated[str, Field(..., description='City where the patient is living')]
     age : Annotated[int, Field(..., gt=0, lt=120, description='Age of the patient' )]
     gender : Annotated[Literal['male', 'female', 'others'], Field(..., description='Gender of the patient')]
-    height : float
-    weight : float 
+    height : Annotated[float, Field(..., gt=0, description='Height of the patient in mtrs')]
+    weight : Annotated[float, Field(..., gt=0, description='Weight of the patient in kgs')]
+
+    #All this above code is so that the user could have a good description of all the required fields that are necessary to fill.
+    #We have to give some time and patience to this part of our code too
 
 
 #------------------------------------------------------------------------
@@ -85,6 +88,5 @@ def sort_patients(sort_by:str = Query(..., description= 'Sort on the basis of he
 
 #----------------------------------------------------------------------------
 
-print("I had to make my github green sorry 😭")
 
 
