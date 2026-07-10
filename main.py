@@ -1,6 +1,21 @@
 from fastapi import FastAPI, Path, HTTPException, Query
+from pydantic import BaseModel
+from typing import Annotated #Ye description add karne ke liye 
 import json
 app = FastAPI() #app naam se hamne ek object banaya hai FastAPI class ka
+
+class Patient(BaseModel): #means hamne ek class banayi jo inherit karegi basemodel class se. Ab hame fields add karni hai jo ek patient ko create karne ki process me required hogi. Patients.json me jo name, age, weight etc. hai, that are the fields that are required 
+
+    id : str
+    name : str
+    city : str
+    age : int
+    gender : str
+    height : float
+    weight : float 
+
+
+#------------------------------------------------------------------------
 
 @app.get("/") #yaha decorator ki help se hamne ek route banaya  "/" home route
 def hello():
