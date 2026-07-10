@@ -7,17 +7,20 @@ from pydantic import BaseModel, Field
 #Basemodel is to define the structure and validation rules.
 #Field is used to add additional rules or validation rules, default values, descriptions and metadata to the attributes. eg. if name is a field then no. of characters = 50 is a validation rule
 
-from typing import Annotated #Ye description add karne ke liye
+from typing import Annotated, Literal
+#Annotatd is description add karne ke liye
+#Literal is so that ham options dena chahte hai jaise in this case male, female and others
 import json
+
 app = FastAPI() #app naam se hamne ek object banaya hai FastAPI class ka
 
 class Patient(BaseModel): #means hamne ek class banayi jo inherit karegi basemodel class se. Ab hame fields add karni hai jo ek patient ko create karne ki process me required hogi. Patients.json me jo name, age, weight etc. hai, that are the fields that are required 
 
-    id : str
-    name : str
-    city : str
-    age : int
-    gender : str
+    id : Annotated[str, Field(..., description='ID of the patient', examples=['P001'])] #3 dots means field required
+    name : Annotated[str, Field(..., description='Name of the patient')]
+    city : Annotated[str, Field(..., description='City where the patient is living')]
+    age : Annotated[int, Field(..., gt=0, lt=120, description='Age of the patient' )]
+    gender : Annotated[Literal['male', 'female', 'others'], Field(..., description='Gender of the patient')]
     height : float
     weight : float 
 
