@@ -1,6 +1,10 @@
 from fastapi import FastAPI, Path, HTTPException, Query
-from pydantic import BaseModel
-from typing import Annotated #Ye description add karne ke liye 
+#Path is used to define and validate path parameters in your api. A path parameter is a value that is a part of your url.
+#HTTPException is a class provided by fastapi that lets you stop processing a request AND return an HTTP error response to the client.
+#Query is used to recieve, validate and document query parameters from the url. Query Parameters are part of url that comes after '?' .
+
+from pydantic import BaseModel #To define the structure and validation rules 
+from typing import Annotated #Ye description add karne ke liye
 import json
 app = FastAPI() #app naam se hamne ek object banaya hai FastAPI class ka
 
