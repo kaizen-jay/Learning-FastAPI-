@@ -3,7 +3,10 @@ from fastapi import FastAPI, Path, HTTPException, Query
 #HTTPException is a class provided by fastapi that lets you stop processing a request AND return an HTTP error response to the client.
 #Query is used to recieve, validate and document query parameters from the url. Query Parameters are part of url that comes after '?' .
 
-from pydantic import BaseModel #To define the structure and validation rules 
+from pydantic import BaseModel, Field
+#Basemodel is to define the structure and validation rules.
+#Field is used to add additional rules or validation rules, default values, descriptions and metadata to the attributes. eg. if name is a field then no. of characters = 50 is a validation rule
+
 from typing import Annotated #Ye description add karne ke liye
 import json
 app = FastAPI() #app naam se hamne ek object banaya hai FastAPI class ka
