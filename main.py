@@ -10,7 +10,10 @@ from pydantic import BaseModel, Field, computed_field
 from typing import Annotated, Literal
 #Annotatd is description add karne ke liye
 #Literal is so that ham options dena chahte hai jaise in this case male, female and others
+
 import json
+
+#-----------------------------------------------------------------------------------
 
 app = FastAPI() #app naam se hamne ek object banaya hai FastAPI class ka
 
@@ -27,6 +30,17 @@ class Patient(BaseModel): #means hamne ek class banayi jo inherit karegi basemod
     #All this above code is so that the user could have a good description of all the required fields that are necessary to fill.
     #We have to give some time and patience to this part of our code too
 
+    '''now we are creating a new computed field'''
+    @computed_field
+    @property
+    def bmi(self) -> float: #is computed field ka naam hoga bmi, aur isko self milega, aur jo ye return karega vo ek float datatype hoga, aur next line me ham bmi calc karenge
+        bmi = round(self.weight/(self.height**2),2) #isko ham 2 digit tak roundoff karenge
+        return bmi
+    '''iss poori process me ham dynamically bmi calc kar rahe hai on the go'''
+
+    @computed_field
+    @property
+    
 
 #------------------------------------------------------------------------
 
