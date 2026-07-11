@@ -37,10 +37,19 @@ class Patient(BaseModel): #means hamne ek class banayi jo inherit karegi basemod
         bmi = round(self.weight/(self.height**2),2) #isko ham 2 digit tak roundoff karenge
         return bmi
     '''iss poori process me ham dynamically bmi calc kar rahe hai on the go'''
-
-    @computed_field
-    @property
     
+    '''verdict wali computed field ke code ko trigger karne k time isme vo self.bmi ko bhi trigger karega to values pehle oopar wale code ko run karke values nikalegi.'''
+    @computed_field 
+    @property
+    def verdict(self) -> str:
+        if self.bmi < 18.5:
+            return 'Underweight'
+        elif self.bmi < 25:
+            return 'Normal'
+        elif self.bmi < 30:
+            return 'Normal'
+        else:
+            return 'Obese'
 
 #------------------------------------------------------------------------
 
