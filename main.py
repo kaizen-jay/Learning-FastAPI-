@@ -3,6 +3,9 @@ from fastapi import FastAPI, Path, HTTPException, Query
 #HTTPException is a class provided by fastapi that lets you stop processing a request AND return an HTTP error response to the client.
 #Query is used to recieve, validate and document query parameters from the url. Query Parameters are part of url that comes after '?' .
 
+from fastapi.responses import JSONResponse
+#jsonresponse ek response hai ki aapka kaam ho gaya hai so we have to show it, so we use jsonresponse
+
 from pydantic import BaseModel, Field, computed_field
 #Basemodel is to define the structure and validation rules.
 #Field is used to add additional rules or validation rules, default values, descriptions and metadata to the attributes. eg. if name is a field then no. of characters = 50 is a validation rule
@@ -73,6 +76,12 @@ def load_data(): #kyuki ye kaam hame baar baar karna padega that's why we are ma
     return data 
 #jab bhi ham iss function ko call karenge ye iss data ko load karega 
 
+def save_data(data):
+    with open('patients.json', 'w') as f:
+        json.dump(data, f)#ham wo data de rahe hai jo hame input mil raha hai aur ham dump kar rahe hai file ke andar
+#so it is a function jise ham ek dictionary denge to wo ise json file me daal dega
+
+
 # Now we will create a new endpoint and we name the route '/view'
 
 @app.get('/view')
@@ -125,8 +134,15 @@ def create_patient(patient: Patient): #ab hame ek function banana hai create pat
         raise HTTPException (status_code=400, detail='Patient already exists')
 
     #add new patient to the database
+
     #and we have to add the pydantic object 'patient' in the existing 'data' which is a python dictionary
     #So firstly we have to change the pydatic object 'patient' into a dictionary 
     data[patient.id] = patient.model_dump(exclude=["id"])#converts a pydantic object into a dictionary #means ki ID ko chhod ke name, city, genger, etc, ko ham 'data' ke andar add kar rahe hai by creating a new key i.e 'patient.id'
 
+    #save into the json file
 
+    #for this we have to first create a utility functio just like load data. so we will go up and create the save_data function 
+
+    save_data(data)
+
+    return JSONResponse(status_code=201, content={'message': 'Patient created successfully'})
