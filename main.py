@@ -3,10 +3,10 @@ from fastapi import FastAPI, Path, HTTPException, Query
 #HTTPException is a class provided by fastapi that lets you stop processing a request AND return an HTTP error response to the client.
 #Query is used to recieve, validate and document query parameters from the url. Query Parameters are part of url that comes after '?' .
 
-from pydantic import BaseModel, Field
+from pydantic import BaseModel, Field, computed_field
 #Basemodel is to define the structure and validation rules.
 #Field is used to add additional rules or validation rules, default values, descriptions and metadata to the attributes. eg. if name is a field then no. of characters = 50 is a validation rule
-
+#computed_field is used to calculate dynamic fields that are not given by the user and we have to calculate it 
 from typing import Annotated, Literal
 #Annotatd is description add karne ke liye
 #Literal is so that ham options dena chahte hai jaise in this case male, female and others
@@ -86,7 +86,7 @@ def sort_patients(sort_by:str = Query(..., description= 'Sort on the basis of he
 
     return sorted_data
 
-#----------------------------------------------------------------------------
+#---------------------------------------------------------------------- 
 
 
 
