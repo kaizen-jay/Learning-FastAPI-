@@ -111,5 +111,10 @@ def sort_patients(sort_by:str = Query(..., description= 'Sort on the basis of he
 
 #---------------------------------------------------------------------- 
 
+'''Ab ham hamara endpoint design karenge jo iss above pydantic model ki help se request body se data lega aur hamare patient database me add karega.'''
+
+@app.post('/create')
+def create_patient() #ab hame ek function banana hai create patient karke
+
 
 
