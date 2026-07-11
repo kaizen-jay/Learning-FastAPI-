@@ -114,7 +114,19 @@ def sort_patients(sort_by:str = Query(..., description= 'Sort on the basis of he
 '''Ab ham hamara endpoint design karenge jo iss above pydantic model ki help se request body se data lega aur hamare patient database me add karega.'''
 
 @app.post('/create')
-def create_patient() #ab hame ek function banana hai create patient karke
+def create_patient(patient: Patient): #ab hame ek function banana hai create patient karke to yaha par user apne patient ka saara data bhejega uska id, weight, age etc in the form of json aur ham use recieve karenge in a variable called patient aus iss variable ka datatype hai Patient (hamara pydantic model) Hamara pydantic model usme saare rules lagayega aur dekhega ki data sahi format me aaya hai ya nahi. Agar kooi bhi format sahi nahi hua to isi step me error aa jayega.
 
+    #load existing data 
+    data = load_data() #dict form me patients ka saara data aa jayega from patients.json   #data here is a python dictionary
+
+
+    #check if the patient already exist
+    if patient.id in data:
+        raise HTTPException (status_code=400, detail='Patient already exists')
+
+    #add new patient to the database
+    #and we have to add the pydantic object 'patient' in the existing 'data' which is a python dictionary
+    #So firstly we have to change the pydatic object 'patient' into a dictionary 
+    data[patient.id] = patient.model_dump(exclude=["id"])#converts a pydantic object into a dictionary #means ki ID ko chhod ke name, city, genger, etc, ko ham 'data' ke andar add kar rahe hai by creating a new key i.e 'patient.id'
 
 
