@@ -172,5 +172,19 @@ def update_patient(patient_id:str, patient_update: PatientUpdate):#ek update_pat
     
     #If patient inside the database then we will extract the info.
 
-    existing_patient_info = data[patient_id] #hame patient_update se city aur weight ke nayi value leni hai aur use existing_patient_info me add karni hai.
-    
+    existing_patient_info = data[patient_id] #hame patient_update se city aur weight ke nayi value leni hai aur use existing_patient_info me add karni hai. #existing wale me saari fields hai 
+    #pehle to patient_update ko dict me convert karna padega. 
+
+    updated_patient_info = patient_update.model_dump(exclude_unset=True) #we used the exclude_unset value bcz hame bas data me se city aur weight wali field chahiye but if we dont use this ye poori fields ko add kar dega. #whereas unlike existing, isme sirf 2 fields hai.
+
+    for key, value in updated_patient_info.items():
+        existing_patient_info[key]= value #existing dictionary me ja rhe hai aur uske andar same key me naya value update kar de rhe hai
+        #ab is existing data me nayi values aa gayi hai and now we have to add this to the patient_id key in the data from the existing_patient_info that was updated just now
+
+    existing_patient_info -> pydantic object -> updated bmi + verdict -> pydantic object -> dict
+    # fir ham iss dict ke oopar next data[patient_id] wala step chala denge 
+    #ham iss existing dict jo updated hai iski help se ek pydantic object banayenge #to isse hoga ki nayi updated values ke saath pydantic object banega (Patient class ka jo ko hamne oopar banaya hai aur usme saari fields firse calculate hokar milegi to hame bmi aur verdict bhi mil jayega for the updated data)
+
+    data[patient_id] = existing_patient_info 
+
+    #save data 
