@@ -181,10 +181,21 @@ def update_patient(patient_id:str, patient_update: PatientUpdate):#ek update_pat
         existing_patient_info[key]= value #existing dictionary me ja rhe hai aur uske andar same key me naya value update kar de rhe hai
         #ab is existing data me nayi values aa gayi hai and now we have to add this to the patient_id key in the data from the existing_patient_info that was updated just now
 
-    existing_patient_info -> pydantic object -> updated bmi + verdict -> pydantic object -> dict
+    #existing_patient_info -> pydantic object -> updated bmi + verdict
+    existing_patient_info['id']= patient_id
+    patient_pydantic_object = Patient(**existing_patient_info)
+    # -> pydantic object -> dict
+    existing_patient_info = patient_pydantic_object.model_dump(exclude='id')
+
     # fir ham iss dict ke oopar next data[patient_id] wala step chala denge 
     #ham iss existing dict jo updated hai iski help se ek pydantic object banayenge #to isse hoga ki nayi updated values ke saath pydantic object banega (Patient class ka jo ko hamne oopar banaya hai aur usme saari fields firse calculate hokar milegi to hame bmi aur verdict bhi mil jayega for the updated data)
 
+    #now add the above dictionary to data
     data[patient_id] = existing_patient_info 
 
     #save data 
+
+    save_data(data)
+
+    return JSONResponse(status_code=200, content={'message':'patient updated'})
+
