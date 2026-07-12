@@ -10,9 +10,10 @@ from pydantic import BaseModel, Field, computed_field
 #Basemodel is to define the structure and validation rules.
 #Field is used to add additional rules or validation rules, default values, descriptions and metadata to the attributes. eg. if name is a field then no. of characters = 50 is a validation rule
 #computed_field is used to calculate dynamic fields that are not given by the user and we have to calculate it 
-from typing import Annotated, Literal
+from typing import Annotated, Literal, Optional
 #Annotatd is description add karne ke liye
 #Literal is so that ham options dena chahte hai jaise in this case male, female and others
+#Optional is a typehint from typing, it tells that a variable or parameter can either have a specific type or 'None' datatype.
 
 import json
 
@@ -54,11 +55,21 @@ class Patient(BaseModel): #means hamne ek class banayi jo inherit karegi basemod
         else:
             return 'Obese'
 
+#-----------------------------------------------------------------------
+
+class PatientUpdate(BaseModel):
+    name: Annotated[Optional[str], Field(defult=None)]
+    city: Annotated[Optional[str], Field(defult=None)]
+    age: Annotated[Optional[int], Field(defult=None, gt=0)]
+    gender: Annotated[Optional[Literal['male', 'female']], Field(default=None)]
+    height: Annotated[Optional[float], Field(defult=None, gt=0)]
+    weight: Annotated[Optional[float], Field(defult=None, gt=0)]
+
 #------------------------------------------------------------------------
 
 @app.get("/") #yaha decorator ki help se hamne ek route banaya  "/" home route
 def hello():
-    return {'message': 'hello world'}
+    return {'message': 'Patient management system API'}
 #this was the first end point of our api 
 
 @app.get("/about")
