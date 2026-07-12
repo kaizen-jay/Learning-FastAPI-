@@ -64,7 +64,7 @@ class PatientUpdate(BaseModel):
     gender: Annotated[Optional[Literal['male', 'female']], Field(default=None)]
     height: Annotated[Optional[float], Field(defult=None, gt=0)]
     weight: Annotated[Optional[float], Field(defult=None, gt=0)]
-
+    #So ab kuch aa rha hai ya ni aa raha hai sab kuch ham recieve kar lenge, nothing is required
 #------------------------------------------------------------------------
 
 @app.get("/") #yaha decorator ki help se hamne ek route banaya  "/" home route
@@ -157,3 +157,20 @@ def create_patient(patient: Patient): #ab hame ek function banana hai create pat
     save_data(data)
 
     return JSONResponse(status_code=201, content={'message': 'Patient created successfully'})
+
+#----------------------------------------------------------
+
+@app.put('/edit/{patient_id}') #hamare endpoint ka naam hai edit aur ise ek patient_id as path parameter milegi
+def update_patient(patient_id:str, patient_update: PatientUpdate):#ek update_patient function bana lenge aur ise 2 cheeze milengi, patient id ise path parameter se milegi, second hame milegi ek request body jisme hamara client patient ka naya information batake bhejega jese ki city aur weight change hua hai. To ye information ham recieve karenge in a variabla called patient_update aur ye ek pydantic object hoga i.e PatientObject ka jo hamne oopar banaya
+
+    data = load_data()
+
+    #firstly we have to check ki jo patient id hame mil rahi hai kya vo hamare database me hai ya nahi
+
+    if patient_id not in data:
+        raise HTTPException (status_code=404, detail= 'patient not found')
+    
+    #If patient inside the database then we will extract the info.
+
+    existing_patient_info = data[patient_id] #hame patient_update se city aur weight ke nayi value leni hai aur use existing_patient_info me add karni hai.
+    
