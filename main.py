@@ -199,4 +199,3 @@ def update_patient(patient_id:str, patient_update: PatientUpdate):#ek update_pat
 
     return JSONResponse(status_code=200, content={'message':'patient updated'})
 
-### added some features
