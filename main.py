@@ -58,12 +58,12 @@ class Patient(BaseModel): #means hamne ek class banayi jo inherit karegi basemod
 #-----------------------------------------------------------------------
 
 class PatientUpdate(BaseModel):
-    name: Annotated[Optional[str], Field(defult=None)]
-    city: Annotated[Optional[str], Field(defult=None)]
-    age: Annotated[Optional[int], Field(defult=None, gt=0)]
-    gender: Annotated[Optional[Literal['male', 'female']], Field(default=None)]
-    height: Annotated[Optional[float], Field(defult=None, gt=0)]
-    weight: Annotated[Optional[float], Field(defult=None, gt=0)]
+    name: Annotated[Optional[str], Field(default=None)]
+    city: Annotated[Optional[str], Field(default=None)]
+    age: Annotated[Optional[int], Field(default=None, gt=0)]
+    gender: Annotated[Optional[Literal['male', 'female', 'others']], Field(default=None)]
+    height: Annotated[Optional[float], Field(default=None, gt=0)]
+    weight: Annotated[Optional[float], Field(default=None, gt=0)]
     #So ab kuch aa rha hai ya ni aa raha hai sab kuch ham recieve kar lenge, nothing is required
 #------------------------------------------------------------------------
 
@@ -202,8 +202,21 @@ def update_patient(patient_id:str, patient_update: PatientUpdate):#ek update_pat
 
 #making github green 🙃
 
-# '''Now we will make the delete endpoint and it will only take user id. and ye patient ka id ham url me as a path parameter provdie karenge. HTTP method that we will use is also DELETE.
-# The flow is - Patient id le rhe hai , usme data load kar rahe hai, then uske andar se vo key-value pair hata de rahe hai jiski key patient_id hai'''
+'''Now we will make the delete endpoint and it will only take user id. and ye patient ka id ham url me as a path parameter provdie karenge. HTTP method that we will use is also DELETE.
+The flow is - Patient id le rhe hai , usme data load kar rahe hai, then uske andar se vo key-value pair hata de rahe hai jiski key patient_id hai'''
 
-# @app.delete('/delete/{patient_id}')
-# def delete_patient(patient_id: str) #ek function bana lenge 
+@app.delete('/delete/{patient_id}')
+def delete_patient(patient_id: str): #ek function bana lenge jisko patient_id as an input milegi and it will be a string datatype.
+
+    #load data
+    data = load_data()
+
+    #yaha pe ham check lagayenge ki jo patient id hame mil rahi hai kya vo patient database me exist karti hai ya nahi
+
+    if patient_id not in data:
+        raise HTTPException(status_code=404, detail='Patient not found') #then if this error doesn't raise:
+    del data[patient_id] #to fir data se patient id ko delete kar denge
+
+    save_data(data)
+
+    return JSONResponse(status_code=200, content={'message': 'patient deleted'})
