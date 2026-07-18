@@ -221,4 +221,3 @@ def delete_patient(patient_id: str): #ek function bana lenge jisko patient_id as
 
     return JSONResponse(status_code=200, content={'message': 'patient deleted'})
 
-#making it green
